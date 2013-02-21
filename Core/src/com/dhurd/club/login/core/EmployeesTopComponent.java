@@ -3,6 +3,7 @@ package com.dhurd.club.login.core;
 import com.dhurd.club.login.sql.SQLManager;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,9 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.event.ListDataListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
@@ -50,8 +57,8 @@ public final class EmployeesTopComponent extends TopComponent {
     private Map<String, Boolean> employeeStates;
     private List<String> employees;
     
-    private EmployeeTableModel model;
-    private EmployeeTableCellRenderer renderer;
+    private EmployeeListModel model;
+    private EmployeeListRenderer renderer;
 
     public EmployeesTopComponent() {
         initComponents();
@@ -73,35 +80,26 @@ public final class EmployeesTopComponent extends TopComponent {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        employeesTable = new javax.swing.JTable();
+        employeesScrollPane = new javax.swing.JScrollPane();
+        employeesList = new javax.swing.JList();
 
-        employeesTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        employeesTable.setTableHeader(null);
-        jScrollPane1.setViewportView(employeesTable);
+        employeesScrollPane.setViewportView(employeesList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+            .addComponent(employeesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+            .addComponent(employeesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable employeesTable;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList employeesList;
+    private javax.swing.JScrollPane employeesScrollPane;
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
@@ -119,10 +117,10 @@ public final class EmployeesTopComponent extends TopComponent {
             logger.log(Level.SEVERE, "Failed to get list of employees for top component", ex);
         }
         
-        model = new EmployeeTableModel();
-        renderer = new EmployeeTableCellRenderer();
-        employeesTable.setDefaultRenderer(String.class, renderer);
-        employeesTable.setModel(model);
+        model = new EmployeeListModel();
+        renderer = new EmployeeListRenderer();
+        employeesList.setCellRenderer(renderer);
+        employeesList.setModel(model);
     }
 
     @Override
@@ -146,31 +144,24 @@ public final class EmployeesTopComponent extends TopComponent {
      * Table model representing club employees. Will be shown as a list.
      * Possible change to a node structure in future?
      */
-    private class EmployeeTableModel extends AbstractTableModel {
+    private class EmployeeListModel implements ListModel {
 
         @Override
-        public int getRowCount() {
+        public int getSize() {
             return employees.size();
         }
 
         @Override
-        public int getColumnCount() {
-            return 2;
+        public Object getElementAt(int index) {
+            return employees.get(index);
         }
 
         @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            String stageName = employees.get(rowIndex);
-            if (columnIndex == 0) {
-                return employeeStates.get(stageName);
-            } else {
-                return stageName;
-            }
+        public void addListDataListener(ListDataListener l) {
         }
 
         @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return false;
+        public void removeListDataListener(ListDataListener l) {
         }
     
     }
@@ -178,18 +169,29 @@ public final class EmployeesTopComponent extends TopComponent {
     /**
      * Temp employee renderer. Testing purposes only.
      */
-    private class EmployeeTableCellRenderer extends JPanel implements TableCellRenderer {
+    private class EmployeeListRenderer extends JLabel implements ListCellRenderer {
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            this.setLayout(new BorderLayout());
-            if (column == 1) {
-                this.add(new JLabel("1"), BorderLayout.CENTER);
-            } else {
-                this.add(new JLabel("Else"), BorderLayout.CENTER);
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            if (value != null) {
+                setEnabled(list.isEnabled());
+                
+                // Set logged in/out icon
+                boolean loggedin = employeeStates.get(value.toString());
+                ImageIcon loggedoutIcon = new ImageIcon(getClass().getResource("/com/dhurd/club/login/core/logged-out.png"));
+                ImageIcon loggedinIcon = new ImageIcon(getClass().getResource("/com/dhurd/club/login/core/logged-in.png"));
+                if (loggedin) {
+                    this.setIcon(loggedinIcon);
+                } else {
+                    this.setIcon(loggedoutIcon);
+                }
+                
+                setFont(list.getFont());
+                // setBackground(list.getBackground()); set the background red if they haven't logged in for a while
+                setText(value.toString());
+                return this;
             }
-            return this;
+            return new JLabel();
         }
-        
     }
 }
