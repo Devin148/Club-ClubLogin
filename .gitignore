@@ -1,0 +1,6 @@
+/dist/
+/build/
+/*/build/
+*/nbproject/private/*
+/nbproject/private/*
+/netbeans-plat
