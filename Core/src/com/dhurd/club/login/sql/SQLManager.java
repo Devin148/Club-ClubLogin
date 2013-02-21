@@ -72,18 +72,19 @@ public class SQLManager {
             
             statement.executeUpdate("CREATE TABLE employees ( "
                     + "id integer PRIMARY KEY AUTOINCREMENT, "
-                    + "firstname varchar(100), "
-                    + "lastname varchar(100), "
-                    + "stagename varchar(100) UNIQUE, "
-                    + "address varchar(100), "
-                    + "ssn varchar(100) UNIQUE, "
-                    + "active integer default 1, "
-                    + "loggedin integer default 0)");
+                    + "firstname VARCHAR(100), "
+                    + "lastname VARCHAR(100), "
+                    + "stagename VARCHAR(100) UNIQUE, "
+                    + "address VARCHAR(100), "
+                    + "dob DATE, "
+                    + "ssn VARCHAR(100) UNIQUE, "
+                    + "active INTEGER DEFAULT 1, "
+                    + "loggedin INTEGER DEFAULT 0)");
             
             statement.executeUpdate("CREATE TABLE managers ( "
-                    + "id integer PRIMARY KEY AUTOINCREMENT, "
-                    + "username varchar(100) UNIQUE, "
-                    + "password varchar(100) )");
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + "username VARCHAR(100) UNIQUE, "
+                    + "password VARCHAR(100) )");
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Failed to create a new database", ex);
         } finally {
