@@ -1,5 +1,7 @@
 package com.dhurd.club.login.core;
 
+import com.dhurd.club.login.panels.LoginPanel;
+import java.awt.BorderLayout;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -64,7 +66,10 @@ public final class MainTopComponent extends TopComponent {
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
+        // Start off at the login panel and we'll work our way from there
+        this.setLayout(new BorderLayout());
+        LoginPanel login = new LoginPanel();
+        this.add(login, BorderLayout.CENTER);
     }
 
     @Override
