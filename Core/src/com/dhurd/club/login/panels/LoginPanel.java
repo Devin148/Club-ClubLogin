@@ -4,11 +4,29 @@
  */
 package com.dhurd.club.login.panels;
 
+import com.dhurd.club.login.sql.LoginManager;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Devin
  */
 public class LoginPanel extends javax.swing.JPanel {
+    private static final Logger logger = Logger.getLogger(LoginPanel.class.getName());
+    
+    PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    LoginManager lm = LoginManager.getDefault();
 
     /**
      * Creates new form LoginPanel
@@ -31,6 +49,7 @@ public class LoginPanel extends javax.swing.JPanel {
         ssnField = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(640, 360));
         setMinimumSize(new java.awt.Dimension(640, 360));
         setPreferredSize(new java.awt.Dimension(640, 360));
@@ -44,6 +63,11 @@ public class LoginPanel extends javax.swing.JPanel {
         ssnField.setText(org.openide.util.NbBundle.getMessage(LoginPanel.class, "LoginPanel.ssnField.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(loginButton, org.openide.util.NbBundle.getMessage(LoginPanel.class, "LoginPanel.loginButton.text")); // NOI18N
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -88,10 +112,49 @@ public class LoginPanel extends javax.swing.JPanel {
                 .addContainerGap(141, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        String ssn = ssnField.getText();
+        if (lm.employeeExists(ssn)) {
+            if (!lm.employeeIsLoggedIn(ssn)) {
+                if (lm.login(ssn)) {
+                    playLoginSound();
+                    pcs.firePropertyChange("loginButton", false, true);
+                    logger.log(Level.INFO, "User logged in.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to log in user.", "Error", JOptionPane.ERROR_MESSAGE);
+                    logger.log(Level.SEVERE, "User logged in.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "User is already logged in.", "Error", JOptionPane.ERROR_MESSAGE);
+                logger.log(Level.WARNING, "User is already logged in.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "User does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.log(Level.WARNING, "User does not exist.");
+        }
+    }//GEN-LAST:event_loginButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton loginButton;
     private javax.swing.JTextField ssnField;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void playLoginSound() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("/com/dhurd/club/login/core/clock-in.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            logger.log(Level.SEVERE, "Unable to play login audio.", ex);
+        }
+    }
+    
+    public void setPropertyChangeSupport(PropertyChangeSupport pcs) {
+        this.pcs = pcs;
+    }
+
 }

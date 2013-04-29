@@ -2,11 +2,16 @@ package com.dhurd.club.login.core;
 
 import com.dhurd.club.login.panels.LoginPanel;
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.logging.Logger;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+import org.openide.windows.WindowManager;
 
 /**
  * Top component which displays something.
@@ -29,9 +34,13 @@ preferredID = "MainTopComponent")
     "CTL_MainTopComponent=Main Window",
     "HINT_MainTopComponent=This is a Main window"
 })
-public final class MainTopComponent extends TopComponent {
+public final class MainTopComponent extends TopComponent implements PropertyChangeListener {
+    private static final Logger logger = Logger.getLogger(MainTopComponent.class.getName());
+    
+    PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public MainTopComponent() {
+        customInit();
         initComponents();
         setName(Bundle.CTL_MainTopComponent());
         setToolTipText(Bundle.HINT_MainTopComponent());
@@ -40,6 +49,10 @@ public final class MainTopComponent extends TopComponent {
         putClientProperty(TopComponent.PROP_MAXIMIZATION_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
 
+    }
+    
+    private void customInit() {
+        pcs.addPropertyChangeListener(this);
     }
 
     /**
@@ -69,6 +82,7 @@ public final class MainTopComponent extends TopComponent {
         // Start off at the login panel and we'll work our way from there
         this.setLayout(new BorderLayout());
         LoginPanel login = new LoginPanel();
+        login.setPropertyChangeSupport(pcs);
         this.add(login, BorderLayout.CENTER);
     }
 
@@ -87,5 +101,15 @@ public final class MainTopComponent extends TopComponent {
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Name      = " + evt.getPropertyName());
+        System.out.println("Old Value = " + evt.getOldValue());
+        System.out.println("New Value = " + evt.getNewValue());
+        
+        EmployeesTopComponent etc = (EmployeesTopComponent) WindowManager.getDefault().findTopComponent("EmployeesTopComponent");
+        etc.componentRefresh();
     }
 }

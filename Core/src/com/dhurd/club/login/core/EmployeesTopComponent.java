@@ -1,9 +1,7 @@
 package com.dhurd.club.login.core;
 
 import com.dhurd.club.login.sql.SQLManager;
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,17 +11,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -53,12 +45,23 @@ preferredID = "EmployeesTopComponent")
 })
 public final class EmployeesTopComponent extends TopComponent {
     private static final Logger logger = Logger.getLogger(EmployeesTopComponent.class.getName());
+    private static EmployeesTopComponent instance;
     
     private Map<String, Boolean> employeeStates;
     private List<String> employees;
     
     private EmployeeListModel model;
     private EmployeeListRenderer renderer;
+    
+    /**
+     * @return the default instance of EmployeesTopComponent
+     */
+    public static EmployeesTopComponent getDefault() {
+        if (instance == null) {
+            instance = new EmployeesTopComponent();
+        }
+        return instance;
+    }
 
     public EmployeesTopComponent() {
         initComponents();
@@ -103,8 +106,8 @@ public final class EmployeesTopComponent extends TopComponent {
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-        employees = new ArrayList<String>();
-        employeeStates = new HashMap<String, Boolean>();
+        employees = new ArrayList<>();
+        employeeStates = new HashMap<>();
         ResultSet rs = SQLManager.getDefault().runQuery("SELECT stagename, loggedin FROM employees WHERE active = 1 ORDER BY stagename");
         try {
             while (rs.next()) {
@@ -121,6 +124,25 @@ public final class EmployeesTopComponent extends TopComponent {
         renderer = new EmployeeListRenderer();
         employeesList.setCellRenderer(renderer);
         employeesList.setModel(model);
+    }
+    
+    public void componentRefresh() {
+        employees.clear();
+        employeeStates.clear();
+        ResultSet rs = SQLManager.getDefault().runQuery("SELECT stagename, loggedin FROM employees WHERE active = 1 ORDER BY stagename");
+        try {
+            while (rs.next()) {
+                String stageName = rs.getString("stagename");
+                int loggedIn = rs.getInt("loggedin");
+                employees.add(stageName);
+                employeeStates.put(stageName, loggedIn == 1 ? Boolean.TRUE : Boolean.FALSE);
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "Failed to get list of employees for top component", ex);
+        }
+        
+        employeesList.validate();
+        employeesList.repaint();
     }
 
     @Override
