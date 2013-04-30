@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.apisupport.project</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
+            <code-name-base>com.dhurd.club.login.jdatepicker</code-name-base>
+            <suite-component/>
+            <module-dependencies/>
+            <public-packages>
+                <package>com.standbysoft.component.date</package>
+                <package>com.standbysoft.component.date.event</package>
+                <package>com.standbysoft.component.date.swing</package>
+                <package>com.standbysoft.component.date.swing.event</package>
+                <package>com.standbysoft.component.date.swing.plaf</package>
+                <package>com.standbysoft.component.date.swing.plaf.basic</package>
+                <package>com.standbysoft.component.util.swing</package>
+            </public-packages>
+            <class-path-extension>
+                <runtime-relative-path>ext/jdatepicker-beans.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jdatepicker-beans.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/jdatepicker.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jdatepicker.jar</binary-origin>
+            </class-path-extension>
+        </data>
+    </configuration>
+</project>
