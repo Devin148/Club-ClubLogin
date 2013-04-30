@@ -49,7 +49,6 @@ public class LoginPanel extends javax.swing.JPanel {
         ssnField = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(640, 360));
         setMinimumSize(new java.awt.Dimension(640, 360));
         setPreferredSize(new java.awt.Dimension(640, 360));
