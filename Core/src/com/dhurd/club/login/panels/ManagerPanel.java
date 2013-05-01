@@ -15,6 +15,10 @@ public class ManagerPanel extends javax.swing.JPanel {
      */
     public ManagerPanel() {
         initComponents();
+        customInit();
+    }
+    
+    private void customInit() {
     }
 
     /**
@@ -26,20 +30,57 @@ public class ManagerPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton7 = new javax.swing.JButton();
+        newEmployeeButton = new javax.swing.JButton();
+        editPayrollButton = new javax.swing.JButton();
+        reportsButton = new javax.swing.JButton();
+        payrollButton = new javax.swing.JButton();
+        employeeListButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
+        editProfileButton = new javax.swing.JButton();
+
+        org.openide.awt.Mnemonics.setLocalizedText(jButton7, org.openide.util.NbBundle.getMessage(ManagerPanel.class, "ManagerPanel.jButton7.text")); // NOI18N
+
         setMaximumSize(new java.awt.Dimension(640, 360));
         setMinimumSize(new java.awt.Dimension(640, 360));
+        setLayout(new java.awt.GridLayout(2, 4, 5, 5));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 360, Short.MAX_VALUE)
-        );
+        newEmployeeButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(newEmployeeButton, org.openide.util.NbBundle.getMessage(ManagerPanel.class, "ManagerPanel.newEmployeeButton.text")); // NOI18N
+        add(newEmployeeButton);
+
+        editPayrollButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(editPayrollButton, org.openide.util.NbBundle.getMessage(ManagerPanel.class, "ManagerPanel.editPayrollButton.text")); // NOI18N
+        add(editPayrollButton);
+
+        reportsButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(reportsButton, org.openide.util.NbBundle.getMessage(ManagerPanel.class, "ManagerPanel.reportsButton.text")); // NOI18N
+        add(reportsButton);
+
+        payrollButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(payrollButton, org.openide.util.NbBundle.getMessage(ManagerPanel.class, "ManagerPanel.payrollButton.text")); // NOI18N
+        add(payrollButton);
+
+        employeeListButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(employeeListButton, org.openide.util.NbBundle.getMessage(ManagerPanel.class, "ManagerPanel.employeeListButton.text")); // NOI18N
+        add(employeeListButton);
+
+        deleteButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(deleteButton, org.openide.util.NbBundle.getMessage(ManagerPanel.class, "ManagerPanel.deleteButton.text")); // NOI18N
+        add(deleteButton);
+
+        editProfileButton.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(editProfileButton, org.openide.util.NbBundle.getMessage(ManagerPanel.class, "ManagerPanel.editProfileButton.text")); // NOI18N
+        add(editProfileButton);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton editPayrollButton;
+    private javax.swing.JButton editProfileButton;
+    private javax.swing.JButton employeeListButton;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton newEmployeeButton;
+    private javax.swing.JButton payrollButton;
+    private javax.swing.JButton reportsButton;
     // End of variables declaration//GEN-END:variables
 }

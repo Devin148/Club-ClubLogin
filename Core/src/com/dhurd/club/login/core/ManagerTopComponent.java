@@ -4,6 +4,8 @@
  */
 package com.dhurd.club.login.core;
 
+import com.dhurd.club.login.panels.ManagerPanel;
+import java.awt.BorderLayout;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -19,7 +21,7 @@ import org.openide.util.NbBundle.Messages;
 @TopComponent.Description(
         preferredID = "ManagerTopComponent",
         //iconBase="SET/PATH/TO/ICON/HERE", 
-        persistenceType = TopComponent.PERSISTENCE_ALWAYS)
+        persistenceType = TopComponent.PERSISTENCE_ONLY_OPENED)
 @TopComponent.Registration(mode = "editor", openAtStartup = true)
 @ActionID(category = "Window", id = "com.dhurd.club.login.core.ManagerTopComponent")
 @ActionReference(path = "Menu/Window" /*, position = 333 */)
@@ -29,7 +31,7 @@ import org.openide.util.NbBundle.Messages;
 @Messages({
     "CTL_ManagerAction=Manager",
     "CTL_ManagerTopComponent=Manager Window",
-    "HINT_ManagerTopComponent=This is a Manager window"
+    "HINT_ManagerTopComponent=Manager Controls"
 })
 public final class ManagerTopComponent extends TopComponent {
 
@@ -68,7 +70,10 @@ public final class ManagerTopComponent extends TopComponent {
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
+        // Add the manager panel
+        this.setLayout(new BorderLayout());
+        ManagerPanel manager = new ManagerPanel();
+        this.add(manager, BorderLayout.CENTER);
     }
 
     @Override
