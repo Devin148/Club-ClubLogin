@@ -108,7 +108,7 @@ public final class EmployeesTopComponent extends TopComponent {
     public void componentOpened() {
         employees = new ArrayList<>();
         employeeStates = new HashMap<>();
-        ResultSet rs = SQLManager.getDefault().runQuery("SELECT stagename, loggedin FROM employees WHERE active = 1 ORDER BY stagename");
+        ResultSet rs = SQLManager.getDefault().runQuery("SELECT stagename, loggedin FROM employee WHERE active = 1 ORDER BY stagename");
         try {
             while (rs.next()) {
                 String stageName = rs.getString("stagename");
@@ -129,7 +129,7 @@ public final class EmployeesTopComponent extends TopComponent {
     public void componentRefresh() {
         employees.clear();
         employeeStates.clear();
-        ResultSet rs = SQLManager.getDefault().runQuery("SELECT stagename, loggedin FROM employees WHERE active = 1 ORDER BY stagename");
+        ResultSet rs = SQLManager.getDefault().runQuery("SELECT stagename, loggedin FROM employee WHERE active = 1 ORDER BY stagename");
         try {
             while (rs.next()) {
                 String stageName = rs.getString("stagename");

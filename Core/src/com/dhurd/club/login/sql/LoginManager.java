@@ -73,7 +73,7 @@ public class LoginManager {
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT COUNT(*) FROM employees WHERE active = 1 AND ssn = '" + ssn + "'");
+            rs = statement.executeQuery("SELECT COUNT(*) FROM employee WHERE active = 1 AND ssn = '" + ssn + "'");
             exists = rs.getInt(1);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Failed to check if employee exists", ex);
@@ -97,7 +97,7 @@ public class LoginManager {
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT COUNT(*) FROM employees WHERE active = 1 AND ssn = '" + ssn + "' AND loggedin = 1");
+            rs = statement.executeQuery("SELECT COUNT(*) FROM employee WHERE active = 1 AND ssn = '" + ssn + "' AND loggedin = 1");
             isLoggedIn = rs.getInt(1);
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Failed to check if employee is logged in", ex);
@@ -119,7 +119,7 @@ public class LoginManager {
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             statement = connection.createStatement();
-            statement.executeUpdate("UPDATE employees SET loggedin = 1 WHERE active = 1 AND ssn ='" + ssn + "'");
+            statement.executeUpdate("UPDATE employee SET loggedin = 1 WHERE active = 1 AND ssn ='" + ssn + "'");
             return true;
         } catch (SQLException ex) {
             logger.log(Level.SEVERE, "Failed to get list of employees for top component", ex);

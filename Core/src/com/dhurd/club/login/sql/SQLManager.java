@@ -70,18 +70,32 @@ public class SQLManager {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             statement = connection.createStatement();
             
-            statement.executeUpdate("CREATE TABLE employees ( "
-                    + "id integer PRIMARY KEY AUTOINCREMENT, "
-                    + "firstname VARCHAR(100), "
-                    + "lastname VARCHAR(100), "
-                    + "stagename VARCHAR(100) UNIQUE, "
-                    + "address VARCHAR(100), "
+            statement.executeUpdate("CREATE TABLE employee ( "
+                    + "id integer NOT NULL PRIMARY KEY AUTOINCREMENT, "
+                    + "firstname VARCHAR(100) NOT NULL, "
+                    + "lastname VARCHAR(100) NOT NULL, "
+                    + "stagename VARCHAR(100) NOT NULL UNIQUE, "
+                    + "address VARCHAR(100) NOT NULL, "
                     + "dob DATE, "
-                    + "ssn VARCHAR(100) UNIQUE, "
-                    + "active INTEGER DEFAULT 1, "
-                    + "loggedin INTEGER DEFAULT 0)");
+                    + "ssn VARCHAR(100) NOT NULL UNIQUE, "
+                    + "active INTEGER NOT NULL DEFAULT 1, "
+                    + "loggedin INTEGER NOT NULL DEFAULT 0)");
             
-            statement.executeUpdate("CREATE TABLE managers ( "
+            statement.executeUpdate("CREATE TABLE has_timecard ( "
+                    + "id integer NOT NULL PRIMARY KEY AUTOINCREMENT, "
+                    + "timecard integer NOT NULL, "
+                    + "employee integer NOT NULL, "
+                    + "FOREIGN KEY (timecard) REFERENCES timecard(id), "
+                    + "FOREIGN KEY (employee) REFERENCES employee(id))");
+            
+            statement.executeUpdate("CREATE TABLE timecard ( "
+                    + "id integer NOT NULL PRIMARY KEY AUTOINCREMENT, "
+                    + "timein integer NOT NULL, "
+                    + "timeout integer NOT NULL, "
+                    + "tips integer NOT NULL, "
+                    + "formula integer NOT NULL)");
+            
+            statement.executeUpdate("CREATE TABLE manager ( "
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "username VARCHAR(100) UNIQUE, "
                     + "password VARCHAR(100) )");
@@ -106,7 +120,7 @@ public class SQLManager {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             statement = connection.createStatement();
             
-            statement.executeUpdate("INSERT INTO managers (username, password) "
+            statement.executeUpdate("INSERT INTO manager (username, password) "
                     + "VALUES ('" + username + "', "
                     + "'" + CoreMath.getMD5(password) + "')");
         } catch (SQLException ex) {
@@ -132,7 +146,7 @@ public class SQLManager {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             statement = connection.createStatement();
             
-            statement.executeUpdate("INSERT INTO employees (firstname, lastname, stagename, address, ssn) "
+            statement.executeUpdate("INSERT INTO employee (firstname, lastname, stagename, address, ssn) "
                     + "VALUES ('" + first + "', "
                     + "'" + last + "', "
                     + "'" + stage + "', "
